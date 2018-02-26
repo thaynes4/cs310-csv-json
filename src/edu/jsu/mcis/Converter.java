@@ -55,6 +55,28 @@ public class Converter {
             JSONObject jsonObject = new JSONObject();
             
             // INSERT YOUR CODE HERE
+            String [] rows;
+            JSONArray jsonArray = new JSONArray();
+            JSONArray data = new JSONArray();
+            JSONArray jsonArrayTwo = new JSONArray();
+            JSONArray jsonArrayThree = new JSONArray();
+            rows = iterator.next();
+            for(int i = 0; i < rows.length; ++i){
+                jsonArrayTwo.add(rows[i]);
+            }
+            while(iterator.hasNext()){
+                rows = iterator.next();
+                jsonArray.add(rows[0]);
+                for(int j = 1; j < rows.length; ++j){
+                    jsonArrayThree.add(Integer.parseInt(rows[j]));
+                }
+                data.add(jsonArrayThree);
+                jsonArrayThree = new JSONArray();
+            }
+            jsonObject.put("colHeaders",jsonArrayTwo);
+            jsonObject.put("rowHeaders",jsonArray);
+            jsonObject.put("data", data);
+            System.out.println(jsonObject.toString());
             
         }
         
@@ -77,6 +99,34 @@ public class Converter {
             CSVWriter csvWriter = new CSVWriter(writer, ',', '"', '\n');
             
             // INSERT YOUR CODE HERE
+            JSONArray row = (JSONArray) jsonObject.get("rowHeaders");
+            JSONArray column = (JSONArray) jsonObject.get("colHeaders");
+            JSONArray datdata = (JSONArray) jsonObject.get("data");
+            String [] easyColumn = new String[column.size()];
+            String [] easyRow = new String[row.size()];
+            String [] easyData = new String[datdata.size()];
+            for(int i = 0; i < column.size(); ++i){
+                easyColumn[i] = column.get(i) + "";
+            }
+            for(int j = 0; j < row.size(); ++j){
+                easyRow[j] = row.get(j) + "";
+            }
+            for(int k = 0; k < datdata.size(); ++k){
+                easyData[k] = datdata.get(k) + "";
+            }
+            csvWriter.writeNext(easyColumn);
+            for(int l = 0; l < easyRow.length; ++l){
+                String [] stuff = new String[5];
+                easyData[l] = easyData[l].replace("[","");
+                easyData[l] = easyData[l].replace("]","");
+                String [] stuffTwo = easyData[l].split(",");
+                stuff[0] = easyRow[l];
+                for(int m = 0; m < stuffTwo.length; ++m){
+                    stuff[m+1] = stuffTwo[m];
+                }
+                csvWriter.writeNext(stuff);
+            }
+            System.out.println(writer.toString());
             
         }
         
