@@ -76,7 +76,8 @@ public class Converter {
             jsonObject.put("colHeaders",jsonArrayTwo);
             jsonObject.put("rowHeaders",jsonArray);
             jsonObject.put("data", data);
-            System.out.println(jsonObject.toString());
+            results = jsonObject.toString();
+            //System.out.println(jsonObject.toString());
             
         }
         
@@ -126,7 +127,8 @@ public class Converter {
                 }
                 csvWriter.writeNext(stuff);
             }
-            System.out.println(writer.toString());
+            results = writer.toString();
+            //System.out.println(writer.toString());
             
         }
         
